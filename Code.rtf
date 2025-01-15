@@ -25,9 +25,9 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder\
 \cf0 from sklearn.cluster import KMeans\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-file_path = "/Users/leonardstaber/Documents/Uni/Semester 7/CRM/Projekt/fitness.csv"\
+file_path = "/Users/leonardstaber/Documents/Uni/GitHub/CRMProjekt/fitness.csv"\
 \
-data = pd.read_csv("/Users/leonardstaber/Documents/Uni/Semester 7/CRM/Projekt/fitness.csv")\
+data = pd.read_csv("/Users/leonardstaber/Documents/Uni/GitHub/CRMProjekt/fitness.csv")\
 \
 print(data.head())\
 \
@@ -38,7 +38,7 @@ print(data.describe())\
 # Encode categorical columns\
 data['Geschlecht'] = LabelEncoder().fit_transform(data['Geschlecht'])\
 data['Raucher'] = LabelEncoder().fit_transform(data['Raucher'])\
-data = pd.get_dummies(data, columns=[\'91Region\'92], drop_first=True)\
+data = pd.get_dummies(data, columns=['Region'], drop_first=True)\
 \
 \
 features = ['Alter\'92, \'91Geschlecht\'92, \'91Kinder\'92, \'91Raucher\'92, 'BMI', \'91Ausgaben\'92] + \\\
