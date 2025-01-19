@@ -1,0 +1,93 @@
+Python 3.13.1 (v3.13.1:06714517797, Dec  3 2024, 14:00:22) [Clang 15.0.0 (clang-1500.3.9.4)] on darwin
+Type "help", "copyright", "credits" or "license()" for more information.
+import pandas as pd
+
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.cluster import KMeans
+file_path = "/Users/leonardstaber/Documents/Uni/GitHub/CRMProjekt/fitness.csv"
+data = pd.read_csv("/Users/leonardstaber/Documents/Uni/GitHub/CRMProjekt/fitness.csv")
+print(data.head())
+print(data.isnull().sum()) #check NAs
+print(data.describe())
+data['Geschlecht'] = LabelEncoder().fit_transform(data['Geschlecht'])
+data['Raucher'] = LabelEncoder().fit_transform(data['Raucher'])
+data = pd.get_dummies(data, columns=[‘Region’], drop_first=True)
+SyntaxError: invalid character '‘' (U+2018)
+data = pd.get_dummies(data, columns=['Region'], drop_first=True)
+features = ['Alter’, ‘Geschlecht’, ‘Kinder’, ‘Raucher’, 'BMI', ‘Ausgaben’] + \
+           [col for col in data.columns if col.startswith('Region_')] # Select relevant features for clustering
+            
+SyntaxError: unterminated string literal (detected at line 2)
+features = ['Alter', 'Geschlecht', 'Kinder', 'Raucher', 'BMI', 'Ausgaben'] + \
+           [col for col in data.columns if col.startswith('Region_')] # Select relevant features for clustering
+            
+scaler = StandardScaler()
+            
+scaled_data = scaler.fit_transform(data[features]) # Normalize data CHECK TO SEE F THEY HAVE BEEN TRANSFORMED
+            
+print(data.head())
+            
+intertia = []
+            
+for k in range(1, 11):
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(scaled_data)
+    inertia.append(kmeans.inertia_)
+
+            
+KMeans(n_clusters=1, random_state=42)
+Traceback (most recent call last):
+  File "<pyshell#19>", line 4, in <module>
+    inertia.append(kmeans.inertia_)
+NameError: name 'inertia' is not defined. Did you mean: 'intertia'?
+inertia = []
+            
+for k in range(1, 11):
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(scaled_data)
+    inertia.append(kmeans.inertia_)
+
+            
+KMeans(n_clusters=1, random_state=42)
+KMeans(n_clusters=2, random_state=42)
+KMeans(n_clusters=3, random_state=42)
+KMeans(n_clusters=4, random_state=42)
+KMeans(n_clusters=5, random_state=42)
+KMeans(n_clusters=6, random_state=42)
+KMeans(n_clusters=7, random_state=42)
+KMeans(random_state=42)
+KMeans(n_clusters=9, random_state=42)
+KMeans(n_clusters=10, random_state=42)
+import matplotlib.pyplot as plt
+plt.plot(range(1, 11), inertia, marker='o')
+[<matplotlib.lines.Line2D object at 0x123a70f50>]
+plt.xlabel('Number of Clusters')
+Text(0.5, 47.04444444444444, 'Number of Clusters')
+plt.ylabel('SSE(Inertia)')
+Text(40.81944444444443, 0.5, 'SSE(Inertia)')
+plt.title('Elbow Method')
+Text(0.5, 1.0, 'Elbow Method')
+plt.show()
+optimal_cluster = 5
+
+kmeans = KMeans(n_clusters = optimal_cluster, random_state = 42)
+data['Cluster'] = kmeans.fit_predict(scaled_data)
+cluster_summary = data.groupby('Cluster').mean()
+print(cluster_summary)
+cluster_summary.head(len(cluster_summary))
+
+>>> pd.set_option('display.max_columns', None)  # Show all columns
+>>> pd.set_option('display.max_rows', None)
+    head(cluster_summary)
+>>> cluster_summary.head(len(cluster_summary))
+
+>>> from sklearn.decomposition import PCA
+>>> pca = PCA(n_components = 2)
+>>> reduced_data = pca.fit_transform(scaled_data)
+
+>>> plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=data['Cluster'], cmap='viridis', s=50)
+>>> plt.title('Cluster Visualization')
+>>> plt.xlabel('PCA 1')
+>>> plt.ylabel('PCA 2')
+>>> plt.colorbar(label='Cluster')
+>>> plt.show()
